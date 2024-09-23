@@ -1,1 +1,2 @@
-# name of go fuc. arg
+# food delivery project
+# Technology stack : 
