@@ -15,6 +15,11 @@ type AppError struct {
 	Key        string `json:"key"`
 }
 
+// convert AppError to Error implement Error() String
+func (e *AppError) Error() string {
+	return e.RootErr.Error()
+}
+
 func NewErrorResponse(rootError error, msg, log, key string) *AppError {
 	return &AppError{StatusCode: http.StatusBadRequest, RootErr: rootError, Message: msg, Log: log, Key: key}
 }
@@ -38,11 +43,6 @@ func NewCustomError(root error, msg string, key string) *AppError {
 		return NewErrorResponse(root, msg, root.Error(), key)
 	}
 	return NewErrorResponse(errors.New(msg), msg, msg, key)
-}
-
-// convert AppError to Error implement Error() String
-func (e *AppError) Error() string {
-	return e.RootErr.Error()
 }
 
 func (e *AppError) RootError() error {
@@ -92,4 +92,8 @@ func ErrCannotCreateEntity(entity string, err error) *AppError {
 		fmt.Sprintf("Cannot create database %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotCreate%s", entity),
 	)
+}
+
+func ErrRecordNotFound(err error) *AppError {
+	return NewFullErrorResponse(400, err, "Record not found", err.Error(), "ErrRecordNotFound")
 }

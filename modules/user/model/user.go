@@ -39,6 +39,6 @@ func (UserCreate) TableName() string {
 	return "users"
 }
 
-func (u *User) Mask(isAdmin bool) {
+func (u *UserCreate) Mask(isAdmin bool) {
 	u.GenUid(common.DB_USER_TYPE)
 }
