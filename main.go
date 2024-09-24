@@ -12,6 +12,7 @@ import (
 	"github.com/lehau17/food_delivery/middlewares"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
+	usertransport "github.com/lehau17/food_delivery/modules/user/transport"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -25,6 +26,7 @@ func main() {
 	//
 	dsn := os.Getenv("MYSQL_CONNECT_STRING")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db = db.Debug()
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -63,11 +65,15 @@ func main() {
 	//api using gorn
 	gin.SetMode("debug")
 	r := gin.Default()
+	gRes := r.Group("/restaurants")
 	r.Use(middlewares.Recovery(ctx))
-	r.GET("/", ginrestaurant.GetListRestaurant(ctx))
-	r.POST("/", ginrestaurant.CreateRestaurant(ctx))
-	r.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
-	r.POST("/upload", ginupload.UploadImage(ctx))
+	gRes.GET("/", ginrestaurant.GetListRestaurant(ctx))
+	gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
+	gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
+	gRes.POST("/upload", ginupload.UploadImage(ctx))
+
+	gUser := r.Group("/user")
+	gUser.POST("/register", usertransport.RegisterUser(ctx))
 
 	// manager version
 	// v1 := r.Group("/v1")

@@ -1,6 +1,10 @@
 package usermodel
 
-import "github.com/lehau17/food_delivery/common"
+import (
+	"errors"
+
+	"github.com/lehau17/food_delivery/common"
+)
 
 const EntityName = "users"
 
@@ -26,11 +30,11 @@ func (u *User) Mask(isAdmin bool) {
 
 type UserCreate struct {
 	common.SqlModel
-	Email     string        `json:"email" gorm:"column:email"`
-	Password  string        `json:"password" gorm:"column:password"`
+	Email     string        `json:"email" gorm:"column:email" binding:"required,email"` // Require email format
+	Password  string        `json:"password" gorm:"column:password" binding:"required"` // Require password
 	Salt      string        `json:"-" gorm:"column:salt"`
-	LastName  string        `json:"last_Name" gorm:"column:last_name"`
-	FirstName string        `json:"first_name" gorm:"column:first_name"`
+	LastName  string        `json:"last_name" gorm:"column:last_name" binding:"required"`   // Require last name
+	FirstName string        `json:"first_name" gorm:"column:first_name" binding:"required"` // Require first name
 	Role      string        `json:"-" gorm:"column:role"`
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
@@ -42,3 +46,8 @@ func (UserCreate) TableName() string {
 func (u *UserCreate) Mask(isAdmin bool) {
 	u.GenUid(common.DB_USER_TYPE)
 }
+
+var (
+	ErrUserExists  = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
+	ErrUserDisable = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
+)

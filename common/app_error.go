@@ -89,7 +89,7 @@ func ErrCannotDeleteEntity(entity string, err error) *AppError {
 func ErrCannotCreateEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot create database %s", strings.ToLower(entity)),
+		fmt.Sprintf("Cannot create record %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotCreate%s", entity),
 	)
 }
