@@ -1,6 +1,7 @@
 package userlikerestaurantmodel
 
 import (
+	"errors"
 	"time"
 
 	"github.com/lehau17/food_delivery/common"
@@ -16,3 +17,7 @@ type Like struct {
 func (Like) TableName() string {
 	return "restaurant_likes"
 }
+
+var (
+	ErrLikeExist = common.NewCustomError(errors.New("Like exists"), "Like exists", "ErrLikeExists")
+)

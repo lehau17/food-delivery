@@ -2,7 +2,6 @@ package ginrestaurant
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/lehau17/food_delivery/common"
 	appcontext "github.com/lehau17/food_delivery/components/app_context"

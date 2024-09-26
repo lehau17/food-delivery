@@ -16,6 +16,7 @@ type Restaurant struct {
 	ShippingFeePerKm int            `json:"shipping_fee_per_km" gorm:"shipping_fee_per_km"`
 	UserId           int            `json:"-" gorm:"user_id"`
 	User             *common.User   `json:"user" gorm:"preload:false"`
+	CountLike        int            `json:"count_like" gorm:"-"`
 }
 
 func (r *Restaurant) Mask(isAdminorOwner bool) {

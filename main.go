@@ -10,6 +10,7 @@ import (
 	appcontext "github.com/lehau17/food_delivery/components/app_context"
 	uploadprovider "github.com/lehau17/food_delivery/components/provider"
 	"github.com/lehau17/food_delivery/middlewares"
+	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
 	usertransport "github.com/lehau17/food_delivery/modules/user/transport/gintransport"
@@ -78,6 +79,8 @@ func main() {
 	gUser.POST("/login", usertransport.Login(ctx))
 	gUser.GET("/profile", middlewares.CheckAuth(ctx), usertransport.Profile(ctx))
 
+	gLike := r.Group("/like", middlewares.CheckAuth(ctx))
+	gLike.POST("/:id", ginlikerestaurant.LikeRestaurant(ctx))
 	// manager version
 	// v1 := r.Group("/v1")
 	// v1.POST("/product", func(c *gin.Context) {

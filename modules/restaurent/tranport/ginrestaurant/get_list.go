@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lehau17/food_delivery/common"
 	appcontext "github.com/lehau17/food_delivery/components/app_context"
+	likestorage "github.com/lehau17/food_delivery/modules/likeuser/storage"
 	restaurantbiz "github.com/lehau17/food_delivery/modules/restaurent/biz"
 	restaurentmodel "github.com/lehau17/food_delivery/modules/restaurent/model"
 	restaurentstorage "github.com/lehau17/food_delivery/modules/restaurent/storage"
@@ -36,7 +37,8 @@ func GetListRestaurant(ctx appcontext.AppContect) gin.HandlerFunc {
 
 		paging.FullFill()
 		store := restaurentstorage.NewSqlStore(db)
-		biz := restaurantbiz.NewGetListRestaurantStore(store)
+		likeStore := likestorage.NewSqlStore(db)
+		biz := restaurantbiz.NewGetListRestaurantStore(store, likeStore)
 		log.Println(paging, filter)
 		result, err := biz.GetDataByCondition(c.Request.Context(), &filter, &paging)
 		if err != nil {
