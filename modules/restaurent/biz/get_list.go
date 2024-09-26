@@ -8,7 +8,7 @@ import (
 )
 
 type GetListRestaurantStore interface {
-	GetList(context context.Context, filter *restaurentmodel.Filter, paging *common.Paging) (result []restaurentmodel.Restaurant, err error)
+	GetList(context context.Context, filter *restaurentmodel.Filter, paging *common.Paging, more ...string) (result []restaurentmodel.Restaurant, err error)
 }
 
 type RestaurantStore struct {
@@ -23,7 +23,7 @@ func NewGetListRestaurantStore(store GetListRestaurantStore) *RestaurantStore {
 func (store *RestaurantStore) GetDataByCondition(context context.Context, filter *restaurentmodel.Filter, paging *common.Paging) (result []restaurentmodel.Restaurant, err error) {
 	//business logic
 	// call db
-	result, err = store.Store.GetList(context, filter, paging)
+	result, err = store.Store.GetList(context, filter, paging, "User")
 	if err != nil {
 		return nil, err
 	}

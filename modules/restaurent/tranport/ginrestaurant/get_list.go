@@ -50,6 +50,7 @@ func GetListRestaurant(ctx appcontext.AppContect) gin.HandlerFunc {
 
 		for i := range result {
 			result[i].Mask(false)
+			result[i].User.Mask(false)
 		}
 		c.JSON(http.StatusOK, common.NewAppResponse(result, paging, filter))
 	}

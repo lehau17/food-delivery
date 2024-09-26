@@ -20,6 +20,17 @@ type User struct {
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
+func (u *User) GetUId() int {
+	return u.Id
+}
+func (u *User) GetEmail() string {
+	return u.Email
+}
+
+func (u *User) GetRole() string {
+	return u.Role
+}
+
 func (User) TableName() string {
 	return "users"
 }
@@ -39,6 +50,15 @@ type UserCreate struct {
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
+type UserLogin struct {
+	Email    string `json:"email" gorm:"column:email" binding:"required,email"` // Require email format
+	Password string `json:"password" gorm:"column:password" binding:"required"` // Require password
+}
+
+func (UserLogin) TableName() string {
+	return "users"
+}
+
 func (UserCreate) TableName() string {
 	return "users"
 }
@@ -48,6 +68,8 @@ func (u *UserCreate) Mask(isAdmin bool) {
 }
 
 var (
-	ErrUserExists  = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
-	ErrUserDisable = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
+	ErrUserExists    = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
+	ErrUserDisable   = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
+	ErrUserLoginFail = common.NewCustomError(errors.New("email or password incorrect"), "Email or password incorrect", "ErrLoginFail")
+	ErrUserNotFound  = common.NewCustomError(errors.New("user not found"), "user not found", "ErrLoginFail")
 )

@@ -42,7 +42,7 @@ func (b *userRegisterBiz) RegisterUser(ctx context.Context, data *usermodel.User
 		return usermodel.ErrUserExists
 	}
 
-	//create user
+	//create user--
 	salt := common.GetSalt(50)
 	data.Salt = salt
 	hashPassword := b.Hash.Hash(data.Password + salt)

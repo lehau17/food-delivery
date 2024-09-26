@@ -12,7 +12,7 @@ import (
 	"github.com/lehau17/food_delivery/middlewares"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
-	usertransport "github.com/lehau17/food_delivery/modules/user/transport"
+	usertransport "github.com/lehau17/food_delivery/modules/user/transport/gintransport"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -35,9 +35,10 @@ func main() {
 	apiKey := os.Getenv("S3_API_KEY")
 	secret := os.Getenv("S3_SECRET")
 	domain := os.Getenv("S3_DOMAIN")
+	secretkey := os.Getenv("SYSTEM_SECRET")
 	var uploadProvider uploadprovider.UploadProvider
 	uploadProvider = uploadprovider.NewS3Provider(bucket, region, apiKey, secret, domain)
-	ctx := appcontext.NewAppContext(db, &uploadProvider)
+	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey)
 
 	// Test UID
 
@@ -65,8 +66,8 @@ func main() {
 	//api using gorn
 	gin.SetMode("debug")
 	r := gin.Default()
-	gRes := r.Group("/restaurants")
 	r.Use(middlewares.Recovery(ctx))
+	gRes := r.Group("/restaurants", middlewares.CheckAuth(ctx))
 	gRes.GET("/", ginrestaurant.GetListRestaurant(ctx))
 	gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
 	gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
@@ -74,6 +75,8 @@ func main() {
 
 	gUser := r.Group("/user")
 	gUser.POST("/register", usertransport.RegisterUser(ctx))
+	gUser.POST("/login", usertransport.Login(ctx))
+	gUser.GET("/profile", middlewares.CheckAuth(ctx), usertransport.Profile(ctx))
 
 	// manager version
 	// v1 := r.Group("/v1")

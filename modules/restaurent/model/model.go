@@ -1,6 +1,8 @@
 package restaurentmodel
 
-import "github.com/lehau17/food_delivery/common"
+import (
+	"github.com/lehau17/food_delivery/common"
+)
 
 type Restaurant struct {
 	common.SqlModel
@@ -8,12 +10,12 @@ type Restaurant struct {
 	Addr             string         `json:"addr" gorm:"column:addr;"`
 	CityId           int            `json:"city_id" gorm:"column:city_id;"` // tag
 	Iat              int            `json:"iat" gorm:"iat"`
-	Code             string         `json:"code" gorm:"column:code;"`
-	Img              string         `json:"img" gorm:"column:img;"`
+	Lng              float64        `json:"lng" gorm:"column:lng;"`
 	Cover            *common.Images `json:"cover" gorm:"column:cover;"`
 	Logo             *common.Image  `json:"logo" gorm:"column:logo;"`
 	ShippingFeePerKm int            `json:"shipping_fee_per_km" gorm:"shipping_fee_per_km"`
-	Price            float64        `json:"price" gorm:"column:price;"`
+	UserId           int            `json:"-" gorm:"user_id"`
+	User             *common.User   `json:"user" gorm:"preload:false"`
 }
 
 func (r *Restaurant) Mask(isAdminorOwner bool) {
@@ -26,12 +28,12 @@ func (r *RestaurantCreate) Mask(isAdminorOwner bool) {
 
 type RestaurantCreate struct {
 	common.SqlModel
-	Name  string         `json:"name" gorm:"column:name;"`
-	Addr  string         `json:"addr" gorm:"column:addr;"`
-	Code  string         `json:"code" gorm:"column:code;"`
-	Price float64        `json:"price" gorm:"column:price;"`
-	Cover *common.Images `json:"cover" gorm:"column:cover;"`
-	Logo  *common.Image  `json:"logo" gorm:"column:logo;"`
+	Name   string         `json:"name" gorm:"column:name;"`
+	Addr   string         `json:"addr" gorm:"column:addr;"`
+	Lng    float64        `json:"lng" gorm:"column:lng;"`
+	Cover  *common.Images `json:"cover" gorm:"column:cover;"`
+	Logo   *common.Image  `json:"logo" gorm:"column:logo;"`
+	UserId int            `json:"-" gorm:"column:user_id"`
 }
 
 type RestaurantUpdate struct {

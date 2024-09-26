@@ -21,7 +21,8 @@ func CreateRestaurant(ctx appcontext.AppContect) gin.HandlerFunc {
 			// log.
 			panic(err)
 		}
-
+		u := c.MustGet(common.CurrentUser).(common.Requester)
+		restaurant.UserId = u.GetUId()
 		// Insert the new restaurant into the database
 		store := restaurentstorage.NewSqlStore(db)
 		biz := restaurantbiz.NewCreateRestaurantBiz(store)

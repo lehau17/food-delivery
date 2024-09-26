@@ -70,6 +70,16 @@ func ErrInternal(err error) *AppError {
 	)
 }
 
+func ErrPermissipn() *AppError {
+	return NewFullErrorResponse(
+		403,
+		errors.New("permission denied"),
+		"Permission denied",
+		"Permission denied",
+		"ErrPermissipnDenied",
+	)
+}
+
 func ErrCannotListEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
