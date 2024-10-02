@@ -13,22 +13,19 @@ import (
 	likestorage "github.com/lehau17/food_delivery/modules/likeuser/storage"
 )
 
-func LikeRestaurant(act appcontext.AppContect) func(c *gin.Context) {
+func UnlikeRestaurant(appCtx appcontext.AppContect) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+		resId, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
 		u := c.MustGet(common.CurrentUser).(common.Requester)
-
-		// idInt, err := common.FromBase58(id)
-		store := likestorage.NewSqlStore(act.GetMainDBConnection())
-		repo := userlikerepo.NewLikeRepo(store, act.GetPubSub())
-		biz := likerestaurantbiz.NewLikeRestarantBiz(repo)
-		if err := biz.LikeRestaurant(c.Request.Context(), &userlikerestaurantmodel.Like{RestaurantId: id, UserId: u.GetUId()}); err != nil {
+		store := likestorage.NewSqlStore(appCtx.GetMainDBConnection())
+		repo := userlikerepo.NewUnlikeRepo(store, appCtx.GetPubSub())
+		biz := likerestaurantbiz.NewUnlikeBiz(repo)
+		if err := biz.UnlikeRestaurant(c.Request.Context(), &userlikerestaurantmodel.Like{RestaurantId: resId, UserId: u.GetUId()}); err != nil {
 			panic(err)
 		}
-
-		c.JSON(http.StatusOK, common.SimplyAppResponse(map[string]interface{}{"message": "Like restaurant successfully "}))
+		c.JSON(http.StatusOK, common.SimplyAppResponse(map[string]interface{}{"message": "UnLike restaurant successfully "}))
 	}
 }

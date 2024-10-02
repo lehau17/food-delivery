@@ -19,5 +19,13 @@ func (Like) TableName() string {
 }
 
 var (
-	ErrLikeExist = common.NewCustomError(errors.New("Like exists"), "Like exists", "ErrLikeExists")
+	ErrLikeExist    = common.NewCustomError(errors.New("Like exists"), "Like exists", "ErrLikeExists")
+	ErrLikeNotExist = common.NewCustomError(errors.New("Like not exists"), "Like not exists", "ErrLikeNotExists")
 )
+
+func (l *Like) GetResId() int {
+	return l.RestaurantId
+}
+func (l *Like) GetUserId() int {
+	return l.UserId
+}

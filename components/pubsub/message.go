@@ -35,3 +35,7 @@ func (m *Message) SetChannel(topic Topic) {
 func (m *Message) Channel() Topic {
 	return m.channel
 }
+
+func (m *Message) Data() interface{} {
+	return m.data
+}

@@ -2,7 +2,10 @@ package userlikerepo
 
 import (
 	"context"
+	"log"
 
+	"github.com/lehau17/food_delivery/common"
+	"github.com/lehau17/food_delivery/components/pubsub"
 	userlikerestaurantmodel "github.com/lehau17/food_delivery/modules/likeuser/model"
 )
 
@@ -13,22 +16,23 @@ type LikeStore interface {
 
 type LikeRepo struct {
 	store LikeStore
+	ps    pubsub.PubSub
 }
 
-func NewLikeRepo(store LikeStore) *LikeRepo {
-	return &LikeRepo{store: store}
+func NewLikeRepo(store LikeStore, pubsub pubsub.PubSub) *LikeRepo {
+	return &LikeRepo{store: store, ps: pubsub}
 }
 
 func (likeRepo *LikeRepo) LikeRestautant(ctx context.Context, data *userlikerestaurantmodel.Like) error {
 	// find like exist
-	foundLike, err := likeRepo.store.FindLike(ctx, data.UserId, data.RestaurantId)
-	if err != nil {
-		return err
-
-	}
-
+	foundLike, _ := likeRepo.store.FindLike(ctx, data.UserId, data.RestaurantId)
 	if foundLike != nil {
 		return userlikerestaurantmodel.ErrLikeExist
 	}
+
+	if err := likeRepo.ps.Publish(ctx, common.TopicUserLikeRestaurant, pubsub.NewMessage(common.TopicUserLikeRestaurant, data)); err != nil {
+		log.Println("Error while like res>>>>>", err)
+	}
+
 	return likeRepo.store.CreateLike(ctx, data)
 }

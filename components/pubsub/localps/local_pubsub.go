@@ -25,8 +25,8 @@ func NewLocalPubsub() *localpubsub {
 	return p
 }
 
-func (p *localpubsub) Publish(ctx context.Context, topic pubsub.Topic, data *pubsub.Message) error {
-	data.SetChannel(topic)
+func (p *localpubsub) Publish(ctx context.Context, channel pubsub.Topic, data *pubsub.Message) error {
+	data.SetChannel(channel)
 	go func() {
 		defer common.AppRecover(ctx)
 		p.messageQueue <- data

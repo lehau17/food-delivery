@@ -2,13 +2,13 @@ package common
 
 import (
 	"context"
-	"fmt"
+	"log"
 )
 
 func AppRecover(ctx context.Context) {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered:", r)
+			log.Println("Recovered:", r)
 		}
 	}()
 }

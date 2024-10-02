@@ -9,11 +9,13 @@ import (
 	"github.com/joho/godotenv"
 	appcontext "github.com/lehau17/food_delivery/components/app_context"
 	uploadprovider "github.com/lehau17/food_delivery/components/provider"
+	"github.com/lehau17/food_delivery/components/pubsub/localps"
 	"github.com/lehau17/food_delivery/middlewares"
 	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
 	usertransport "github.com/lehau17/food_delivery/modules/user/transport/gintransport"
+	"github.com/lehau17/food_delivery/subcriber"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -39,8 +41,10 @@ func main() {
 	secretkey := os.Getenv("SYSTEM_SECRET")
 	var uploadProvider uploadprovider.UploadProvider
 	uploadProvider = uploadprovider.NewS3Provider(bucket, region, apiKey, secret, domain)
-	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey)
-
+	ps := localps.NewLocalPubsub()
+	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey, ps)
+	consumberJob := subcriber.NewConsumerEngine(ctx)
+	consumberJob.Start()
 	// Test UID
 
 	// type Uid struct {
@@ -68,19 +72,24 @@ func main() {
 	gin.SetMode("debug")
 	r := gin.Default()
 	r.Use(middlewares.Recovery(ctx))
-	gRes := r.Group("/restaurants", middlewares.CheckAuth(ctx))
-	gRes.GET("/", ginrestaurant.GetListRestaurant(ctx))
-	gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
-	gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
-	gRes.POST("/upload", ginupload.UploadImage(ctx))
+	{
+		gRes := r.Group("/restaurants", middlewares.CheckAuth(ctx))
+		gRes.GET("/", ginrestaurant.GetListRestaurant(ctx))
+		gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
+		gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
+		gRes.POST("/upload", ginupload.UploadImage(ctx))
+		gRes.POST("/:id/like", ginlikerestaurant.LikeRestaurant(ctx))
+		gRes.POST("/:id/unlike", ginlikerestaurant.UnlikeRestaurant(ctx))
+	}
+	{
+		gUser := r.Group("/user")
+		gUser.POST("/register", usertransport.RegisterUser(ctx))
+		gUser.POST("/login", usertransport.Login(ctx))
+		gUser.GET("/profile", middlewares.CheckAuth(ctx), usertransport.Profile(ctx))
+	}
 
-	gUser := r.Group("/user")
-	gUser.POST("/register", usertransport.RegisterUser(ctx))
-	gUser.POST("/login", usertransport.Login(ctx))
-	gUser.GET("/profile", middlewares.CheckAuth(ctx), usertransport.Profile(ctx))
-
-	gLike := r.Group("/like", middlewares.CheckAuth(ctx))
-	gLike.POST("/:id", ginlikerestaurant.LikeRestaurant(ctx))
+	// gLike := r.Group("/like", middlewares.CheckAuth(ctx))
+	// gLike.POST("/:id", ginlikerestaurant.LikeRestaurant(ctx))
 	// manager version
 	// v1 := r.Group("/v1")
 	// v1.POST("/product", func(c *gin.Context) {
