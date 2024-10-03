@@ -14,3 +14,9 @@ func (p *Paging) FullFill() {
 		p.Page = 1
 	}
 }
+
+type PagingCursor struct {
+	Limit int    `json:"limit" form:"limit"`
+	Total int64  `json:"total" form:"total"`
+	Curor string `json:"curor" form:"curor"`
+}
