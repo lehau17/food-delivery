@@ -11,6 +11,7 @@ import (
 	uploadprovider "github.com/lehau17/food_delivery/components/provider"
 	"github.com/lehau17/food_delivery/components/pubsub/localps"
 	"github.com/lehau17/food_delivery/middlewares"
+	"github.com/lehau17/food_delivery/modules/category/transport/gincategory"
 	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
@@ -87,19 +88,12 @@ func main() {
 		gUser.POST("/login", usertransport.Login(ctx))
 		gUser.GET("/profile", middlewares.CheckAuth(ctx), usertransport.Profile(ctx))
 	}
+	{
+		gCate := r.Group("/categories", middlewares.CheckAuth(ctx))
+		gCate.POST("/", gincategory.CreateCategory(ctx))
+		gCate.PATCH("/:id", gincategory.UpdateCategory(ctx))
+	}
 
-	// gLike := r.Group("/like", middlewares.CheckAuth(ctx))
-	// gLike.POST("/:id", ginlikerestaurant.LikeRestaurant(ctx))
-	// manager version
-	// v1 := r.Group("/v1")
-	// v1.POST("/product", func(c *gin.Context) {
-	// 	fmt.Print(c.Request.Body)
-
-	// 	c.JSON(201, gin.H{
-	// 		"message": "Hello world",
-	// 		"payload": body,
-	// 	})
-	// })
 	r.Run() // listen and serve on 0.0.0.0:8080
 
 }
