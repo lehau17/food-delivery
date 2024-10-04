@@ -12,6 +12,7 @@ import (
 	"github.com/lehau17/food_delivery/components/pubsub/localps"
 	"github.com/lehau17/food_delivery/middlewares"
 	"github.com/lehau17/food_delivery/modules/category/transport/gincategory"
+	"github.com/lehau17/food_delivery/modules/food/transport/ginfood"
 	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
@@ -94,6 +95,13 @@ func main() {
 		gCate.GET("/", gincategory.GetListCategory(ctx))
 		gCate.PATCH("/:id", gincategory.UpdateCategory(ctx))
 		gCate.DELETE("/:id", gincategory.DeleteCategory(ctx))
+	}
+	{
+		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
+		gFood.POST("/", ginfood.CreateFood(ctx))
+		// gFood.GET("/", gincategory.GetListCategory(ctx))
+		// gFood.PATCH("/:id", gincategory.UpdateCategory(ctx))
+		// gFood.DELETE("/:id", gincategory.DeleteCategory(ctx))
 	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080
