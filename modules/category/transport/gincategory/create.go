@@ -22,6 +22,13 @@ func CreateCategory(appCtx appcontext.AppContect) gin.HandlerFunc {
 		if err := biz.CreateCategory(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}
+		// go func() {
+		// 	for {
+		// 		if err := biz.CreateCategory(c.Request.Context(), &data); err != nil {
+		// 			panic(err)
+		// 		}
+		// 	}
+		// }()
 		c.JSON(http.StatusOK, common.SimplyAppResponse(gin.H{"message": "Create category Success"}))
 	}
 }

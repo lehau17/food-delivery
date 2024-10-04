@@ -91,7 +91,9 @@ func main() {
 	{
 		gCate := r.Group("/categories", middlewares.CheckAuth(ctx))
 		gCate.POST("/", gincategory.CreateCategory(ctx))
+		gCate.GET("/", gincategory.GetListCategory(ctx))
 		gCate.PATCH("/:id", gincategory.UpdateCategory(ctx))
+		gCate.DELETE("/:id", gincategory.DeleteCategory(ctx))
 	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080

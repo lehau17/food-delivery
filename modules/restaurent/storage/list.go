@@ -12,11 +12,11 @@ func (s *sqlStore) GetList(context context.Context, filter *restaurentmodel.Filt
 	for i := range more {
 		db = db.Preload(more[i])
 	}
-	db = db.Where("status in (?)", filter.Status).Order("id desc")
 	if f := filter; f != nil {
 		// custom db
 
 	}
+	db = db.Where("status in (?)", filter.Status).Order("id desc")
 	//get result and return
 	err = db.Offset((paging.Page - 1) * paging.Limit).Find(&result).Limit(paging.Limit).Error
 	if err != nil {
