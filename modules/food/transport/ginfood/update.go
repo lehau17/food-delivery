@@ -1,7 +1,6 @@
 package ginfood
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -14,31 +13,23 @@ import (
 	foodstorage "github.com/lehau17/food_delivery/modules/food/storage"
 )
 
-func FindFood(appCtx appcontext.AppContect) gin.HandlerFunc {
+func UpdateFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var data foodmodel.FoodUpdate
+		if err := c.ShouldBind(&data); err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
-		var filter foodmodel.Filter
-		if err := c.ShouldBind(&filter); err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
-		filter.FullFilter()
-		log.Println("Check filter:", filter)
 		db := appCtx.GetMainDBConnection()
 		store := foodstorage.NewSqlStore(db)
-		repo := foodrepo.NewFoodFindRepo(store)
-		biz := foodbiz.NewFoodFindBiz(repo)
-
-		data, errRes := biz.FindFood(c.Request.Context(), id, &filter)
-		if errRes != nil {
-			panic(errRes)
+		repo := foodrepo.NewFoodUpdateRepo(store)
+		biz := foodbiz.NewFoodUpdateBiz(repo)
+		if err := biz.UpdateFood(c.Request.Context(), &data, id); err != nil {
+			panic(err)
 		}
-		data.Mask()
-		c.JSON(http.StatusOK, common.SimplyAppResponse(gin.H{
-			"message": "Fetch food",
-			"data":    data,
-		}))
+		c.JSON(http.StatusOK, common.SimplyAppResponse(gin.H{"message": "Updated food"}))
 	}
 }
