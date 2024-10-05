@@ -3,6 +3,7 @@ package common
 import (
 	"database/sql/driver"
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -20,6 +21,10 @@ type Uid struct {
 func (uid Uid) String() string {
 	val := uint64(uid.localId)<<28 | uint64(uid.objectType)<<18 | uint64(uid.shardId)
 	return base58.Encode([]byte(fmt.Sprintf("%v", val)))
+}
+func (uid Uid) MarshalJSON() ([]byte, error) {
+	encodedUid := uid.String()
+	return json.Marshal(encodedUid)
 }
 
 // Constructor for Uid

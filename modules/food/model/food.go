@@ -38,5 +38,12 @@ type FoodCreate struct {
 func (f *FoodCreate) TableName() string { return EntityName }
 
 var (
-	ErrFoodNotFound = common.NewFullErrorResponse(400, errors.New("not found food"), "Not found food", "Not found food", "ErrFoodNotFound")
+	ErrFoodNotFound       = common.NewFullErrorResponse(400, errors.New("not found food"), "Not found food", "Not found food", "ErrFoodNotFound")
+	ErrFoodHasBeenDeleted = common.NewFullErrorResponse(400, errors.New("food has been deleted"), "food has been deleted", "food has been deleted", "ErrFoodHasBeenDeleted")
 )
+
+func (f *Food) Mask() {
+	f.GenUid(common.DB_FOOD_TYPE)
+	f.Category.GenUid(common.DB_CATEGORY_TYPE)
+	f.Restaurant.GenUid(common.DB_RESTAURANT_TYPE)
+}

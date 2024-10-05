@@ -11,8 +11,8 @@ func (s *sqlStore) FindFoodWithRestaurant(ctx context.Context, foodId int, userI
 	var food foodmodel.Food
 
 	if err := s.db.Table(foodmodel.EntityName).
-		Preload("Restaurant").
-		Where("foods.id = ? AND restaurants.user_id = ?", foodId, userId).
+		Preload("Restaurant", "user_id = ?", userId).
+		Where("foods.id = ?", foodId).
 		Find(&food).Error; err != nil {
 		return nil, common.ErrDb(err)
 	}

@@ -29,6 +29,9 @@ func (b *FoodDeleteRepo) DeleteFood(ctx context.Context, id int, userId int) err
 	if food == nil || food.Id == 0 {
 		return foodmodel.ErrFoodNotFound
 	}
+	if food.Status == 0 {
+		return foodmodel.ErrFoodHasBeenDeleted
+	}
 	if err := b.FoodStore.DeleteFood(ctx, id); err != nil {
 		return common.ErrCannotDeleteEntity("food", err)
 	}

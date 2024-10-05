@@ -99,7 +99,7 @@ func main() {
 	{
 		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
 		gFood.POST("/", ginfood.CreateFood(ctx))
-		// gFood.GET("/", gincategory.GetListCategory(ctx))
+		gFood.GET("/:id", ginfood.FindFood(ctx))
 		// gFood.PATCH("/:id", gincategory.UpdateCategory(ctx))
 		gFood.DELETE("/:id", ginfood.DeleteFood(ctx))
 	}
