@@ -101,7 +101,7 @@ func main() {
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		// gFood.GET("/", gincategory.GetListCategory(ctx))
 		// gFood.PATCH("/:id", gincategory.UpdateCategory(ctx))
-		// gFood.DELETE("/:id", gincategory.DeleteCategory(ctx))
+		gFood.DELETE("/:id", ginfood.DeleteFood(ctx))
 	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080
