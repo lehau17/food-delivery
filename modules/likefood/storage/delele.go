@@ -9,7 +9,7 @@ import (
 
 func (s *sqlStore) DeleteLike(ctx context.Context, foodId int, userId int) error {
 	db := s.db.Table(likefoodmodel.EntityName)
-	if err := db.Where("food_id = ? and user_id = ?").Delete(nil).Error; err != nil {
+	if err := db.Where("food_id = ? and user_id = ?", foodId, userId).Delete(nil).Error; err != nil {
 		return common.ErrDb(err)
 	}
 	return nil

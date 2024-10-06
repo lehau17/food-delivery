@@ -37,5 +37,6 @@ func (lf *LikeFoodCreate) TableName() string {
 }
 
 var (
-	ErrLikeExists = common.NewErrorResponse(errors.New("like exists"), "Like Exists", "Like food already exists", "ErrLikeFoodExists")
+	ErrLikeExists    = common.NewErrorResponse(errors.New("like exists"), "Like Exists", "Like food already exists", "ErrLikeFoodExists")
+	ErrLikeNotExists = common.NewErrorResponse(errors.New("like not exists"), "Like not Exists", "Like food not exists", "ErrLikeFoodNotExists")
 )

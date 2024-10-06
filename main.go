@@ -101,6 +101,7 @@ func main() {
 		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))
+		gFood.POST("/:id/unlike", ginLikefood.UnlikeFood(ctx))
 		gFood.GET("/:id", ginfood.FindFood(ctx))
 		gFood.GET("/", ginfood.GetList(ctx))
 		//
