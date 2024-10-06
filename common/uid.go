@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/btcsuite/btcutil/base58"
 )
@@ -46,6 +47,23 @@ func DecomposeUid(s string) (Uid, error) {
 
 	val := binary.BigEndian.Uint64(uidBytes)
 	if 1<<18 > val {
+		return Uid{}, errors.New("invalid uid")
+	}
+	u := Uid{
+		localId:    uint32(val >> 28),
+		objectType: int(val >> 18 & 0x3FF),
+		shardId:    uint32(val & 0x3FFFF),
+	}
+	return u, nil
+}
+
+func Decode(s string) (Uid, error) {
+	uidBytes := base58.Decode(s)
+	if len(uidBytes) == 0 {
+		return Uid{}, errors.New("invalid uid")
+	}
+	val, err := strconv.Atoi(string(uidBytes))
+	if err != nil {
 		return Uid{}, errors.New("invalid uid")
 	}
 	u := Uid{
