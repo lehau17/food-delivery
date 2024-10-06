@@ -48,30 +48,7 @@ func main() {
 	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey, ps)
 	consumberJob := subcriber.NewConsumerEngine(ctx)
 	consumberJob.Start()
-	// Test UID
 
-	// type Uid struct {
-	// 	localId    uint32
-	// 	objectType int
-	// 	shardId    uint32
-	// }
-
-	// func(uid Uid) String(){
-	// 	return "hehe"
-	// }
-
-	// Implement phương thức String cho kiểu Uid
-	// func (uid Uid) String() string {
-	// 	// Tạo giá trị từ các trường của Uid
-	// 	val := uint64(uid.localId)<<28 | uint64(uid.objectType)<<18 | uint64(uid.shardId)<<0
-	// 	// Chuyển đổi giá trị thành chuỗi base58
-	// 	return base58.Encode([]byte(fmt.Sprintf("%v", val)))
-	// }
-	// func NewUidhewhw(localId uint32, objectType int, shardId uint32) Uid {
-	// 	return Uid{localId: localId, objectType: objectType, shardId: shardId}
-	// }
-
-	//api using gorn
 	gin.SetMode("debug")
 	r := gin.Default()
 	r.Use(middlewares.Recovery(ctx))
@@ -103,6 +80,7 @@ func main() {
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))
 		gFood.POST("/:id/unlike", ginLikefood.UnlikeFood(ctx))
 		gFood.GET("/:id", ginfood.FindFood(ctx))
+		gFood.GET("/:id/users-like", ginLikefood.GetListUserLikeFood(ctx))
 		gFood.GET("/", ginfood.GetList(ctx))
 		//
 		gFood.PATCH("/:id", ginfood.UpdateFood(ctx))
