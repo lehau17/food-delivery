@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/lehau17/food_delivery/common"
+	"github.com/lehau17/food_delivery/components/pubsub"
 	likefoodmodel "github.com/lehau17/food_delivery/modules/likefood/model"
 )
 
@@ -14,11 +15,11 @@ type LikeFoodStore interface {
 
 type LikeFoodRepo struct {
 	store LikeFoodStore
-	// ps
+	ps    pubsub.PubSub
 }
 
-func NewLikeFoodRepo(store LikeFoodStore) *LikeFoodRepo {
-	return &LikeFoodRepo{store: store}
+func NewLikeFoodRepo(store LikeFoodStore, ps pubsub.PubSub) *LikeFoodRepo {
+	return &LikeFoodRepo{store: store, ps: ps}
 }
 
 func (r *LikeFoodRepo) CreateLikeFood(ctx context.Context, data *likefoodmodel.LikeFoodCreate) error {
@@ -36,5 +37,6 @@ func (r *LikeFoodRepo) CreateLikeFood(ctx context.Context, data *likefoodmodel.L
 	if likeFound != nil {
 		return likefoodmodel.ErrLikeExists
 	}
+	r.ps.Publish(ctx, common.TopicUserLikeFood, pubsub.NewMessage(common.TopicUserLikeFood, data))
 	return r.store.CreateLikeFood(ctx, data)
 }

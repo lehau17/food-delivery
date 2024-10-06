@@ -23,6 +23,7 @@ type Food struct {
 	Category     *categorymodel.Category     `json:"category" gorm:"preload:false"`
 	RestaurantId int                         `json:"-" gorm:"column:restaurant_id"` // Fixed gorm tag
 	Restaurant   *restaurentmodel.Restaurant `json:"restaurant" gorm:"preload:false"`
+	Like         int                         `json:"like" gorm:"column:like"`
 }
 
 func (f *Food) TableName() string { return EntityName }

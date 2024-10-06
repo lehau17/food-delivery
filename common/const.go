@@ -11,6 +11,7 @@ const (
 	CurrentUser               = "user"
 	TopicUserLikeRestaurant   = "user-like-restaurant"
 	TopicUserUnLikeRestaurant = "user-unlike-restaur"
+	TopicUserLikeFood         = "user-like-food"
 )
 
 type Requester interface {

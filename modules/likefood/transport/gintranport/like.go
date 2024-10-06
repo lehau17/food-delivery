@@ -19,7 +19,7 @@ func LikeFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 		store := likefoodstorage.NewSqlStore(appCtx.GetMainDBConnection())
-		repo := likefoodrepo.NewLikeFoodRepo(store)
+		repo := likefoodrepo.NewLikeFoodRepo(store, appCtx.GetPubSub())
 		biz := likefoodbiz.NewLikeFoodCreateBiz(repo)
 		data := likefoodmodel.LikeFoodCreate{FoodId: int(uid.GetLocalId()), UserId: u.GetUId()}
 		if err := biz.Create(c.Request.Context(), &data); err != nil {

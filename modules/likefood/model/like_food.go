@@ -28,6 +28,10 @@ type LikeFoodCreate struct {
 	UserId int `json:"-" gorm:"column:user_id"`
 }
 
+func (lf *LikeFoodCreate) GetFoodId() int {
+	return lf.FoodId
+}
+
 func (lf *LikeFoodCreate) TableName() string {
 	return EntityName
 }

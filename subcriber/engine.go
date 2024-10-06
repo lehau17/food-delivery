@@ -26,6 +26,7 @@ func NewConsumerEngine(appCtx appcontext.AppContect) *consumerEngine {
 func (engine *consumerEngine) Start() error {
 	engine.startSubTopic(common.TopicUserLikeRestaurant, true, IncreaseLikeCountAfterUserDisLikeRestaurant(engine.appCtx))
 	engine.startSubTopic(common.TopicUserUnLikeRestaurant, true, DesLikeCountAfterUserDisLikeRestaurant(engine.appCtx))
+	engine.startSubTopic(common.TopicUserLikeFood, true, IncLikeCountAfterUserLikeFood(engine.appCtx))
 	return nil
 }
 
