@@ -7,7 +7,7 @@ import (
 )
 
 type FoodUpdateStore interface {
-	UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int) error
+	UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int, user_id int) error
 }
 
 type FoodUpdateRepo struct {
@@ -17,6 +17,7 @@ type FoodUpdateRepo struct {
 func NewFoodUpdateRepo(repo FoodUpdateStore) *FoodUpdateRepo {
 	return &FoodUpdateRepo{Repo: repo}
 }
-func (r *FoodUpdateRepo) UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int) error {
-	return r.Repo.UpdateFood(ctx, data, id)
+func (r *FoodUpdateRepo) UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int, user_id int) error {
+
+	return r.Repo.UpdateFood(ctx, data, id, user_id)
 }

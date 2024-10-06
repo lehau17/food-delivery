@@ -21,6 +21,10 @@ func (c *Category) TableName() string {
 	return EntityName
 }
 
+func (c *Category) Mask() {
+	c.GenUid(common.DB_CATEGORY_TYPE)
+}
+
 type CategoryCreate struct {
 	Name        *string       `json:"name,omitempty" gorm:"column:name"`
 	Description *string       `json:"description,omitempty" gorm:"column:description"`

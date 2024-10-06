@@ -7,11 +7,11 @@ import (
 	foodmodel "github.com/lehau17/food_delivery/modules/food/model"
 )
 
-func (s *sqlStore) UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int) error {
+func (s *sqlStore) UpdateFood(ctx context.Context, data *foodmodel.FoodUpdate, id int, user_id int) error {
 	db := s.db.Table(data.TableName())
 
 	var foundFood foodmodel.Food
-	if err := db.Where("id = ? AND status = 1", id).First(&foundFood).Error; err != nil {
+	if err := db.Preload("Restaurant", "user_id = ?", user_id).Where("id = ? AND status = 1", id).First(&foundFood).Error; err != nil {
 		return common.ErrDb(err)
 	}
 

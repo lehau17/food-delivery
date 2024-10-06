@@ -2,6 +2,7 @@ package foodmodel
 
 import (
 	"errors"
+	"log"
 
 	"github.com/lehau17/food_delivery/common"
 	categorymodel "github.com/lehau17/food_delivery/modules/category/model"
@@ -54,6 +55,11 @@ var (
 
 func (f *Food) Mask() {
 	f.GenUid(common.DB_FOOD_TYPE)
-	f.Category.GenUid(common.DB_CATEGORY_TYPE)
-	f.Restaurant.GenUid(common.DB_RESTAURANT_TYPE)
+	log.Println(f.Fake_id)
+	if f.Category != nil {
+		f.Category.Mask()
+	}
+	if f.Restaurant != nil {
+		f.Restaurant.Mask(false)
+	}
 }

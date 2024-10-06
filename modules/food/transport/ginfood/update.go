@@ -23,11 +23,12 @@ func UpdateFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+		u := c.MustGet(common.CurrentUser).(common.Requester)
 		db := appCtx.GetMainDBConnection()
 		store := foodstorage.NewSqlStore(db)
 		repo := foodrepo.NewFoodUpdateRepo(store)
 		biz := foodbiz.NewFoodUpdateBiz(repo)
-		if err := biz.UpdateFood(c.Request.Context(), &data, id); err != nil {
+		if err := biz.UpdateFood(c.Request.Context(), &data, id, u.GetUId()); err != nil {
 			panic(err)
 		}
 		c.JSON(http.StatusOK, common.SimplyAppResponse(gin.H{"message": "Updated food"}))
