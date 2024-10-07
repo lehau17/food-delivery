@@ -37,6 +37,6 @@ func GetListFoodUserLiked(appCtx appcontext.AppContect) gin.HandlerFunc {
 		for i := range data {
 			data[i].Mask()
 		}
-		c.JSON(http.StatusOK, common.SimplyAppResponse(data))
+		c.JSON(http.StatusOK, common.NewAppResponse(data, paging, filter))
 	}
 }

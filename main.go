@@ -13,6 +13,7 @@ import (
 	"github.com/lehau17/food_delivery/middlewares"
 	"github.com/lehau17/food_delivery/modules/category/transport/gincategory"
 	"github.com/lehau17/food_delivery/modules/food/transport/ginfood"
+	"github.com/lehau17/food_delivery/modules/foodrating/transport/ginfoodrating"
 	ginLikefood "github.com/lehau17/food_delivery/modules/likefood/transport/gintranport"
 	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
@@ -79,6 +80,8 @@ func main() {
 		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))
+		gFood.POST("/:id/rating", ginfoodrating.CreateFoodRating(ctx))
+		gFood.POST("/:id/rating/delete", ginfoodrating.DeleteFoodRating(ctx))
 		gFood.POST("/:id/unlike", ginLikefood.UnlikeFood(ctx))
 		gFood.GET("/:id", ginfood.FindFood(ctx))
 		gFood.GET("/:id/users-like", ginLikefood.GetListUserLikeFood(ctx))
@@ -87,6 +90,11 @@ func main() {
 		gFood.PATCH("/:id", ginfood.UpdateFood(ctx))
 		//
 		gFood.DELETE("/:id", ginfood.DeleteFood(ctx))
+	}
+	{
+		gFoodRating := r.Group("/food-rating", middlewares.CheckAuth(ctx))
+		// gFoodRating.POST("/", ginfoodrating.CreateFoodRating(ctx))
+		gFoodRating.DELETE("/:id", ginfoodrating.DeleteFoodRating(ctx))
 	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080
