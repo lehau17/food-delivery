@@ -17,7 +17,7 @@ func CheckRole(act appcontext.AppContect, role ...string) gin.HandlerFunc {
 			}
 		}
 		if !flag {
-			panic(common.ErrPermissipn())
+			panic(common.ErrPermission())
 		}
 		c.Next()
 	}

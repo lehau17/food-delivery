@@ -24,6 +24,7 @@ type Food struct {
 	RestaurantId int                         `json:"-" gorm:"column:restaurant_id"` // Fixed gorm tag
 	Restaurant   *restaurentmodel.Restaurant `json:"restaurant" gorm:"preload:false"`
 	Like         int                         `json:"like" gorm:"column:like"`
+	AvgPoint     float32                     `json:"avg_point" gorm:"column:avg_point"`
 }
 
 func (f *Food) TableName() string { return EntityName }
@@ -35,6 +36,7 @@ type FoodCreate struct {
 	Images       *common.Images `json:"images" gorm:"column:images"`
 	CategoryId   int            `json:"category_id" binding:"required" gorm:"column:category_id"`
 	RestaurantId int            `json:"-" gorm:"column:restaurant_id"` // Fixed gorm tag
+	AvgPoint     float32        `json:"-" gorm:"column:avg_point"`
 }
 
 type FoodUpdate struct {

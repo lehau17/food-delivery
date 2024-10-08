@@ -14,13 +14,18 @@ type FoodRating struct {
 	common.SqlModel
 	Point   float32      `json:"point" gorm:"column:point"`
 	Comment string       `json:"comment" gorm:"column:comment"`
-	UserId  int          `json:"user_id" gorm:"column:user_id"`
+	UserId  int          `json:"-" gorm:"column:user_id"`
 	User    *common.User `json:"user" gorm:"preload:false"`
 	FoodId  int          `json:"food_id" gorm:"column:food_id"`
 }
 
 func (fr *FoodRating) TableName() string {
 	return EntityName
+}
+
+func (fr *FoodRating) Mask() {
+	fr.GenUid(common.DB_FOOD_RATING_TYPE)
+	fr.User.GenUid(common.DB_USER_TYPE)
 }
 
 type FoodRatingCreate struct {
@@ -30,7 +35,17 @@ type FoodRatingCreate struct {
 	FoodId  int     `json:"-" gorm:"column:food_id"`
 }
 
+type FoodRatingUpdate struct {
+	Point   float32 `json:"point,omitempty" gorm:"column:point,omitempty"`
+	Comment string  `json:"comment,omitempty" gorm:"column:comment,omitempty"`
+	Id      int
+	UserId  int
+}
+
 func (fr *FoodRatingCreate) TableName() string {
+	return EntityName
+}
+func (fr *FoodRatingUpdate) TableName() string {
 	return EntityName
 }
 

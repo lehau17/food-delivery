@@ -81,6 +81,7 @@ func main() {
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))
 		gFood.POST("/:id/rating", ginfoodrating.CreateFoodRating(ctx))
+		gFood.GET("/:id/rating", ginfoodrating.GetListFoodRating(ctx))
 		gFood.POST("/:id/rating/delete", ginfoodrating.DeleteFoodRating(ctx))
 		gFood.POST("/:id/unlike", ginLikefood.UnlikeFood(ctx))
 		gFood.GET("/:id", ginfood.FindFood(ctx))
@@ -95,6 +96,7 @@ func main() {
 		gFoodRating := r.Group("/food-rating", middlewares.CheckAuth(ctx))
 		// gFoodRating.POST("/", ginfoodrating.CreateFoodRating(ctx))
 		gFoodRating.DELETE("/:id", ginfoodrating.DeleteFoodRating(ctx))
+		gFoodRating.PATCH("/:id", ginfoodrating.UpdateFoodRating(ctx))
 	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080

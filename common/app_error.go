@@ -70,13 +70,13 @@ func ErrInternal(err error) *AppError {
 	)
 }
 
-func ErrPermissipn() *AppError {
+func ErrPermission() *AppError {
 	return NewFullErrorResponse(
 		403,
 		errors.New("permission denied"),
 		"Permission denied",
 		"Permission denied",
-		"ErrPermissipnDenied",
+		"ErrPermissionDenied",
 	)
 }
 
@@ -106,4 +106,12 @@ func ErrCannotCreateEntity(entity string, err error) *AppError {
 
 func ErrRecordNotFound(err error) *AppError {
 	return NewFullErrorResponse(400, err, "Record not found", err.Error(), "ErrRecordNotFound")
+}
+
+func ErrCannotUpdateEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot Update record %s", strings.ToLower(entity)),
+		fmt.Sprintf("ErrCannotUpdate%s", entity),
+	)
 }
