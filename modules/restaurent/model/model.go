@@ -17,6 +17,7 @@ type Restaurant struct {
 	UserId           int            `json:"-" gorm:"user_id"`
 	User             *common.User   `json:"user" gorm:"preload:false"`
 	CountLike        int            `json:"count_like" gorm:"like"`
+	Rating           float32        `json:"rating" gorm:"column:rating"`
 }
 
 func (r *Restaurant) Mask(isAdminorOwner bool) {

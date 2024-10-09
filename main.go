@@ -77,6 +77,7 @@ func main() {
 		gCate.DELETE("/:id", gincategory.DeleteCategory(ctx))
 	}
 	{
+		ginfood.UpdateAvgPointsAuto(ctx)
 		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))
@@ -93,6 +94,7 @@ func main() {
 		gFood.DELETE("/:id", ginfood.DeleteFood(ctx))
 	}
 	{
+
 		gFoodRating := r.Group("/food-rating", middlewares.CheckAuth(ctx))
 		// gFoodRating.POST("/", ginfoodrating.CreateFoodRating(ctx))
 		gFoodRating.DELETE("/:id", ginfoodrating.DeleteFoodRating(ctx))
