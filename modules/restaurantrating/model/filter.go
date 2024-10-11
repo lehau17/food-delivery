@@ -1,8 +1,8 @@
 package restaurantratingmodel
 
 type Filter struct {
-	Point   int    `json:"point,omitempty" gorm:"column:point,omitempty"`
-	Comment string `json:"commet,omitempty" gorm:"column:commet,omitempty"`
+	Point   int    `json:"point,omitempty" form:"column:point"`
+	Comment string `json:"comment,omitempty" form:"column:comment"`
 }
 
 func (f *Filter) FullFill() {

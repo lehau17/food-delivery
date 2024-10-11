@@ -1,11 +1,12 @@
 package common
 
 const (
-	DB_RESTAURANT_TYPE  = 1
-	DB_USER_TYPE        = 2
-	DB_CATEGORY_TYPE    = 3
-	DB_FOOD_TYPE        = 4
-	DB_FOOD_RATING_TYPE = 5
+	DB_RESTAURANT_TYPE        = 1
+	DB_USER_TYPE              = 2
+	DB_CATEGORY_TYPE          = 3
+	DB_FOOD_TYPE              = 4
+	DB_FOOD_RATING_TYPE       = 5
+	DB_RESTAURANT_RATING_TYPE = 6
 )
 
 const (

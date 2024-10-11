@@ -19,6 +19,6 @@ func NewRestaurantRatingListFoodBiz(repo RestaurantRatingListFoodRepo) *Restaura
 	return &RestaurantRatingListFoodBiz{repo: repo}
 }
 
-func (s *RestaurantRatingListFoodBiz) ListFoodFoodRating(ctx context.Context, conditions map[string]interface{}, filter *restaurantratingmodel.Filter, paging *common.PagingCursor, moreField ...string) ([]restaurantratingmodel.RestaurantRating, error) {
+func (s *RestaurantRatingListFoodBiz) ListRestaurantRating(ctx context.Context, conditions map[string]interface{}, filter *restaurantratingmodel.Filter, paging *common.PagingCursor, moreField ...string) ([]restaurantratingmodel.RestaurantRating, error) {
 	return s.repo.ListFoodRestaurantRating(ctx, conditions, filter, paging, moreField...)
 }

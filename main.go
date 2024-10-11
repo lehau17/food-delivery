@@ -16,6 +16,7 @@ import (
 	"github.com/lehau17/food_delivery/modules/foodrating/transport/ginfoodrating"
 	ginLikefood "github.com/lehau17/food_delivery/modules/likefood/transport/gintranport"
 	"github.com/lehau17/food_delivery/modules/likeuser/transport/ginlikerestaurant"
+	"github.com/lehau17/food_delivery/modules/restaurantrating/transport/ginrestaurantrating"
 	"github.com/lehau17/food_delivery/modules/restaurent/tranport/ginrestaurant"
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
 	usertransport "github.com/lehau17/food_delivery/modules/user/transport/gintransport"
@@ -57,6 +58,8 @@ func main() {
 		gRes := r.Group("/restaurants", middlewares.CheckAuth(ctx))
 		gRes.GET("/", ginrestaurant.GetListRestaurant(ctx))
 		gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
+		gRes.POST("/:id/rating", ginrestaurantrating.CreateRestaurantRating(ctx))
+		gRes.GET("/:id/rating", ginrestaurantrating.ListRestaurantRating(ctx))
 		gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
 		gRes.POST("/upload", ginupload.UploadImage(ctx))
 		gRes.POST("/:id/like", ginlikerestaurant.LikeRestaurant(ctx))
