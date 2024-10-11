@@ -17,3 +17,7 @@ type RestaurantRatngCreateRepo struct {
 func NewRestaurantRatngCreateRepo(store RestaurantRatingCreateStore) *RestaurantRatngCreateRepo {
 	return &RestaurantRatngCreateRepo{store: store}
 }
+
+func (r *RestaurantRatngCreateRepo) CreateRestaurantRating(ctx context.Context, data *restaurantratingmodel.RestaurantRatingCreate) error {
+	return r.store.CreateRestaurantRating(ctx, data)
+}

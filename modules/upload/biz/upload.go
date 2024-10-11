@@ -54,14 +54,6 @@ func (biz *uploadBiz) Upload(ctx context.Context, data []byte, folder, fileName 
 	return img, nil
 }
 
-// func getImageDemension(reader io.Reader) (int, int, error) {
-// 	img, _, err := image.DecodeConfig(reader)
-// 	if err != nil {
-// 		return 0, 0, err
-// 	}
-// 	return img.Width, img.Height, nil
-// }
-
 func getImageDemension(reader io.Reader) (int, int, error) {
 	img, _, err := image.DecodeConfig(reader)
 	if err != nil {
