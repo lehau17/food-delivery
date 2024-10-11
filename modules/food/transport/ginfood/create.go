@@ -26,7 +26,7 @@ func CreateFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 		foodStore := foodstorage.NewSqlStore(db)
 		resStore := restaurentstorage.NewSqlStore(db)
 		cateStore := categorystorage.NewSqlStore(db)
-		repo := foodrepo.NewFoodCreateRepo(foodStore, cateStore, resStore)
+		repo := foodrepo.NewFoodCreateRepo(foodStore, cateStore, resStore, appCtx.GetPubSub())
 		biz := foodbiz.NewFoodCreateBiz(repo)
 		if err := biz.CreateFood(context.Background(), &data, u.GetUId()); err != nil {
 			panic(err)

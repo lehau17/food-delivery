@@ -30,6 +30,7 @@ type Food struct {
 func (f *Food) TableName() string { return EntityName }
 
 type FoodCreate struct {
+	ID           int            `json:"id" gorm:"column:id;primaryKey;autoIncrement"`
 	Name         string         `json:"name" binding:"required" gorm:"column:name"`
 	Description  string         `json:"description" gorm:"column:description"`
 	Price        float64        `json:"price" binding:"required" gorm:"column:price"`

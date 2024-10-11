@@ -36,5 +36,5 @@ func (b *FoodCreateRepo) CheckOwner(ctx context.Context, data *foodmodel.FoodCre
 	}
 	data.RestaurantId = foundRestaurant.Id
 
-	return b.FoodStore.CreateFood(ctx, data)
+	return nil
 }
