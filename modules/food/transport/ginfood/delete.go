@@ -22,7 +22,7 @@ func DeleteFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 		}
 		db := appCtx.GetMainDBConnection()
 		foodStore := foodstorage.NewSqlStore(db)
-		repo := foodrepo.NewFoodDeleteRepo(foodStore)
+		repo := foodrepo.NewFoodDeleteRepo(foodStore, appCtx.GetPubSub())
 		biz := foodbiz.NewFoodDeleteRepo(repo)
 		if err := biz.DeleteFood(context.Background(), id, u.GetUId()); err != nil {
 			panic(err)

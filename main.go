@@ -60,6 +60,7 @@ func main() {
 		gRes.POST("/", ginrestaurant.CreateRestaurant(ctx))
 		gRes.POST("/:id/rating", ginrestaurantrating.CreateRestaurantRating(ctx))
 		gRes.GET("/:id/rating", ginrestaurantrating.ListRestaurantRating(ctx))
+		gRes.DELETE("/:id/rating", ginrestaurantrating.DeleteRestaurantRating(ctx))
 		gRes.DELETE("/:id", ginrestaurant.DeleteRestaurant(ctx))
 		gRes.POST("/upload", ginupload.UploadImage(ctx))
 		gRes.POST("/:id/like", ginlikerestaurant.LikeRestaurant(ctx))
@@ -80,7 +81,7 @@ func main() {
 		gCate.DELETE("/:id", gincategory.DeleteCategory(ctx))
 	}
 	{
-		ginfood.UpdateAvgPointsAuto(ctx)
+		// ginfood.UpdateAvgPointsAuto(ctx)
 		gFood := r.Group("/foods", middlewares.CheckAuth(ctx))
 		gFood.POST("/", ginfood.CreateFood(ctx))
 		gFood.POST("/:id/like", ginLikefood.LikeFood(ctx))

@@ -27,6 +27,9 @@ type Food struct {
 	AvgPoint     float32                     `json:"avg_point" gorm:"column:avg_point"`
 }
 
+func (f *Food) GetFoodIdModel() int { return f.Id }
+func (f *Food) GetResIdModel() int  { return f.RestaurantId }
+
 func (f *Food) TableName() string { return EntityName }
 
 type FoodCreate struct {
