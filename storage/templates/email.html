@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h3 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #555555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .otp-code {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Xin chào {{.Email}},</h3>
+        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
+        <p>Mã OTP để xác nhận tài khoản của bạn có hiệu lực trong 10P: <span class="otp-code">{{.Otp}}</span></p>
+    </div>
+    <div class="footer">
+        <p>Bạn nhận được email này vì bạn đã đăng ký sử dụng dịch vụ của chúng tôi.</p>
+        <p>Để không nhận thêm email từ chúng tôi, vui lòng <a href="#">hủy đăng ký</a>.</p>
+    </div>
+</body>
+</html>

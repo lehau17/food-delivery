@@ -30,6 +30,7 @@ func (engine *consumerEngine) Start() error {
 	engine.startSubTopic(common.TopicUserUnLikeFood, true, DesLikeCountAfterUserDisLikeFood(engine.appCtx))
 	engine.startSubTopic(common.TopicCreateFoodRestaurant, true, CreateFoodRestaurantWhileCreateFood(engine.appCtx))
 	engine.startSubTopic(common.TopicDeleteFoodRestaurant, true, DeleteFood_RestaurantWhileDeleteFood(engine.appCtx))
+	engine.startSubTopic(common.TopicSendMailWhileUserCreated, true, SendMail(engine.appCtx))
 	return nil
 }
 

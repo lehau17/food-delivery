@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	_ "image/jpeg"
 	_ "image/png"
+	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +23,7 @@ import (
 	"github.com/lehau17/food_delivery/modules/upload/tranport/ginupload"
 	usertransport "github.com/lehau17/food_delivery/modules/user/transport/gintransport"
 	"github.com/lehau17/food_delivery/subcriber"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -47,7 +50,18 @@ func main() {
 	var uploadProvider uploadprovider.UploadProvider
 	uploadProvider = uploadprovider.NewS3Provider(bucket, region, apiKey, secret, domain)
 	ps := localps.NewLocalPubsub()
-	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey, ps)
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+	if pong := rdb.Ping(context.Background()); pong.String() != "ping: PONG" {
+		log.Println("-------------Error connection redis ----------:", pong)
+	} else {
+		log.Println("-------CONNECTED REDIS ----------")
+	}
+
+	ctx := appcontext.NewAppContext(db, &uploadProvider, secretkey, ps, rdb)
 	consumberJob := subcriber.NewConsumerEngine(ctx)
 	consumberJob.Start()
 

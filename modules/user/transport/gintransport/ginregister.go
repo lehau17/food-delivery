@@ -22,7 +22,7 @@ func RegisterUser(act appcontext.AppContect) func(c *gin.Context) {
 
 		store := userstorage.NewSqlStore(db)
 		md5 := hasher.NewMd5Hasher()
-		biz := userbiz.NewUserRegisterBiz(store, md5)
+		biz := userbiz.NewUserRegisterBiz(store, md5, act.GetPubSub(), *act.GetRedis())
 		if err := biz.RegisterUser(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}

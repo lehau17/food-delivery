@@ -10,13 +10,14 @@ const (
 )
 
 const (
-	CurrentUser               = "user"
-	TopicUserLikeRestaurant   = "user-like-restaurant"
-	TopicUserUnLikeRestaurant = "user-unlike-restaur"
-	TopicUserLikeFood         = "user-like-food"
-	TopicUserUnLikeFood       = "user-unlike-food"
-	TopicCreateFoodRestaurant = "create-food-restaurant"
-	TopicDeleteFoodRestaurant = "delete-food-restaurant"
+	CurrentUser                   = "user"
+	TopicUserLikeRestaurant       = "user-like-restaurant"
+	TopicUserUnLikeRestaurant     = "user-unlike-restaur"
+	TopicUserLikeFood             = "user-like-food"
+	TopicUserUnLikeFood           = "user-unlike-food"
+	TopicCreateFoodRestaurant     = "create-food-restaurant"
+	TopicDeleteFoodRestaurant     = "delete-food-restaurant"
+	TopicSendMailWhileUserCreated = "send-mail-while-user-created"
 )
 
 type Requester interface {

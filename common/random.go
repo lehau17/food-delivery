@@ -2,6 +2,7 @@ package common
 
 import (
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -22,4 +23,14 @@ func GetSalt(len int) string {
 		len = 50
 	}
 	return randomSequence(len)
+}
+
+func randomOTP() string {
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	return strconv.Itoa(r1.Intn(999999) + 100000)
+}
+
+func GetOtp() string {
+	return randomOTP()
 }
