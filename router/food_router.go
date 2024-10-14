@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	appcontext "github.com/lehau17/food_delivery/components/app_context"
 	"github.com/lehau17/food_delivery/middlewares"
+	"github.com/lehau17/food_delivery/modules/cart/transport/gincart"
 	"github.com/lehau17/food_delivery/modules/food/transport/ginfood"
 	"github.com/lehau17/food_delivery/modules/foodrating/transport/ginfoodrating"
 	ginLikefood "github.com/lehau17/food_delivery/modules/likefood/transport/gintranport"
@@ -24,4 +25,8 @@ func InitFoodRouter(r *gin.Engine, ctx appcontext.AppContect) {
 	gFood.PATCH("/:id", ginfood.UpdateFood(ctx))
 	//
 	gFood.DELETE("/:id", ginfood.DeleteFood(ctx))
+
+	// cart
+	gFood.POST("/:id/cart", gincart.AddToCart(ctx))
+	gFood.DELETE("/:id/cart", gincart.DeleteFromCart(ctx))
 }
