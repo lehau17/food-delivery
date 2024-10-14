@@ -50,6 +50,11 @@ type UserCreate struct {
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
+type UserVerifyOtp struct {
+	Email string `json:"email" gorm:"column:email" binding:"required,email"` // Require email format
+	Otp   string `json:"otp" binding:"required"`
+}
+
 type UserLogin struct {
 	Email    string `json:"email" gorm:"column:email" binding:"required,email"` // Require email format
 	Password string `json:"password" gorm:"column:password" binding:"required"` // Require password
@@ -69,7 +74,10 @@ func (u *UserCreate) Mask(isAdmin bool) {
 
 var (
 	ErrUserExists    = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
+	ErrUserNotExists = common.NewCustomError(errors.New("User not exists"), "User not exists", "ErrUserNotExists")
 	ErrUserDisable   = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
+	ErrUserEnable    = common.NewCustomError(errors.New("User already enable"), "User already enable", "ErrUserEnable")
 	ErrUserLoginFail = common.NewCustomError(errors.New("email or password incorrect"), "Email or password incorrect", "ErrLoginFail")
 	ErrUserNotFound  = common.NewCustomError(errors.New("user not found"), "user not found", "ErrLoginFail")
+	ErrOtp           = common.NewCustomError(errors.New("otp invalid"), "otp invalid", "ErrOtpInvalid")
 )

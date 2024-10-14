@@ -20,7 +20,7 @@ func RegisterUser(act appcontext.AppContect) func(c *gin.Context) {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		store := userstorage.NewSqlStore(db)
+		store := userstorage.NewSqlStore(db, act.GetRedis())
 		md5 := hasher.NewMd5Hasher()
 		biz := userbiz.NewUserRegisterBiz(store, md5, act.GetPubSub(), *act.GetRedis())
 		if err := biz.RegisterUser(c.Request.Context(), &data); err != nil {

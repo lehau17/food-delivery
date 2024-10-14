@@ -33,7 +33,7 @@ func CheckAuth(act appcontext.AppContect) func(c *gin.Context) {
 			panic(err)
 		}
 		db := act.GetMainDBConnection()
-		store := userstorage.NewSqlStore(db)
+		store := userstorage.NewSqlStore(db, act.GetRedis())
 		//decode
 		payload, err := jwtProvider.Validate(token)
 		if err != nil {

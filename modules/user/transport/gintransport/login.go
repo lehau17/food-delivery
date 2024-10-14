@@ -19,7 +19,7 @@ func Login(atx appcontext.AppContect) func(c *gin.Context) {
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
-		store := userstorage.NewSqlStore(atx.GetMainDBConnection())
+		store := userstorage.NewSqlStore(atx.GetMainDBConnection(), atx.GetRedis())
 		md5 := hasher.NewMd5Hasher()
 		jwtProvider := jwt.NewJwtProvider(atx.SecretKey())
 		biz := userbiz.NewUserLoginBiz(store, md5, jwtProvider, 30)

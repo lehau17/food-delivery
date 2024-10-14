@@ -21,7 +21,7 @@ func GetListUserLikeFood(appCtx appcontext.AppContect) gin.HandlerFunc {
 		}
 		db := appCtx.GetMainDBConnection()
 		likeFoodStore := likefoodstorage.NewSqlStore(db)
-		userStore := userstorage.NewSqlStore(db)
+		userStore := userstorage.NewSqlStore(db, appCtx.GetRedis())
 		repo := likefoodrepo.NewLikeFoodGetListUserRepo(userStore, likeFoodStore)
 		biz := likefoodbiz.NewLikeFoodListUserBiz(repo)
 		data, err := biz.GetListUserLikeFood(c.Request.Context(), int(uid.GetLocalId()))
