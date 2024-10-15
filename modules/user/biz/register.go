@@ -16,18 +16,18 @@ type UserRegisterStore interface {
 	Find(ctx context.Context, condition map[string]interface{}, moreInfo ...string) (*usermodel.User, error)
 }
 
-type Hash interface {
+type hash interface {
 	Hash(data string) string
 }
 
 type userRegisterBiz struct {
 	UserRegisterStore UserRegisterStore
-	Hash              Hash
+	Hash              hash
 	ps                pubsub.PubSub
 	rdb               redis.Client
 }
 
-func NewUserRegisterBiz(store UserRegisterStore, hash Hash, ps pubsub.PubSub, rdb redis.Client) *userRegisterBiz {
+func NewUserRegisterBiz(store UserRegisterStore, hash hash, ps pubsub.PubSub, rdb redis.Client) *userRegisterBiz {
 	return &userRegisterBiz{UserRegisterStore: store, Hash: hash, ps: ps, rdb: rdb}
 }
 

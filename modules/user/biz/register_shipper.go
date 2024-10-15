@@ -18,12 +18,12 @@ type RegisterShipperRegisterStore interface {
 
 type shipperRegisterBiz struct {
 	store RegisterShipperRegisterStore
-	Hash  Hash
+	Hash  hash
 	ps    pubsub.PubSub
 	rdb   redis.Client
 }
 
-func NewShipperRegisterBiz(store RegisterShipperRegisterStore, hash Hash, ps pubsub.PubSub, rdb redis.Client) *shipperRegisterBiz {
+func NewShipperRegisterBiz(store RegisterShipperRegisterStore, hash hash, ps pubsub.PubSub, rdb redis.Client) *shipperRegisterBiz {
 	return &shipperRegisterBiz{store: store, Hash: hash, ps: ps, rdb: rdb}
 }
 

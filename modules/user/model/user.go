@@ -88,11 +88,12 @@ func (u *UserCreate) Mask(isAdmin bool) {
 }
 
 var (
-	ErrUserExists    = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
-	ErrUserNotExists = common.NewCustomError(errors.New("User not exists"), "User not exists", "ErrUserNotExists")
-	ErrUserDisable   = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
-	ErrUserEnable    = common.NewCustomError(errors.New("User already enable"), "User already enable", "ErrUserEnable")
-	ErrUserLoginFail = common.NewCustomError(errors.New("email or password incorrect"), "Email or password incorrect", "ErrLoginFail")
-	ErrUserNotFound  = common.NewCustomError(errors.New("user not found"), "user not found", "ErrLoginFail")
-	ErrOtp           = common.NewCustomError(errors.New("otp invalid"), "otp invalid", "ErrOtpInvalid")
+	ErrUserExists                      = common.NewCustomError(errors.New("User already exists"), "User already exists", "ErrUserExists")
+	ErrUserNotExists                   = common.NewCustomError(errors.New("User not exists"), "User not exists", "ErrUserNotExists")
+	ErrUserDisable                     = common.NewCustomError(errors.New("User already disable"), "User already disable", "ErrUserDisable")
+	ErrUserEnable                      = common.NewCustomError(errors.New("User already enable"), "User already enable", "ErrUserEnable")
+	ErrUserLoginFail                   = common.NewCustomError(errors.New("email or password incorrect"), "Email or password incorrect", "ErrLoginFail")
+	ErrUserNotFound                    = common.NewCustomError(errors.New("user not found"), "user not found", "ErrLoginFail")
+	ErrOtp                             = common.NewCustomError(errors.New("otp invalid"), "otp invalid", "ErrOtpInvalid")
+	ErrNewPassWordIsNotBangOldPassword = common.NewCustomError(errors.New("new password is not old password"), "New password invalid", "ErrPasswordInvalid")
 )
