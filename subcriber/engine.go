@@ -31,6 +31,7 @@ func (engine *consumerEngine) Start() error {
 	engine.startSubTopic(common.TopicCreateFoodRestaurant, true, CreateFoodRestaurantWhileCreateFood(engine.appCtx))
 	engine.startSubTopic(common.TopicDeleteFoodRestaurant, true, DeleteFood_RestaurantWhileDeleteFood(engine.appCtx))
 	engine.startSubTopic(common.TopicSendMailWhileUserCreated, true, SendMail(engine.appCtx))
+	engine.startSubTopic(common.TopicSendMailWhileUserForgotPassword, true, SendMail(engine.appCtx))
 	return nil
 }
 

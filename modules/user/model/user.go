@@ -47,7 +47,22 @@ type UserCreate struct {
 	LastName  string        `json:"last_name" gorm:"column:last_name" binding:"required"`   // Require last name
 	FirstName string        `json:"first_name" gorm:"column:first_name" binding:"required"` // Require first name
 	Role      string        `json:"-" gorm:"column:role"`
+	Phone     string        `json:"phone" gorm:"column:phone" binding:"required"`
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
+}
+
+type UserForgotPassword struct {
+	Email string `json:"email" gorm:"column:email" binding:"required"`
+}
+
+type ChangePassword struct {
+	Email        string `json:"email" gorm:"column:email" binding:"required"`
+	Password     string `json:"password" gorm:"-" binding:"required"`
+	HashPassword string `json:"-" gorm:"column:password"`
+}
+
+func (cp *ChangePassword) TableName() string {
+	return "users"
 }
 
 type UserVerifyOtp struct {

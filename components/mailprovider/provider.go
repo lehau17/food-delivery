@@ -20,3 +20,26 @@ type EmailProvider interface {
 	SendMail(to []string, templateName, subject string, data interface{}) error
 	ParseTemplate(templateFileName string, data interface{}) (string, error)
 }
+
+type DataSendMail struct {
+	To           []string
+	Subject      string
+	TemplateName string
+	Payload      interface{}
+}
+
+func (d *DataSendMail) GetPayLoadSendEmail() interface{} {
+	return d.Payload
+}
+
+func (d *DataSendMail) GetTo() []string {
+	return d.To
+}
+
+func (d *DataSendMail) GetSubject() string {
+	return d.Subject
+}
+
+func (d *DataSendMail) GetTemplateName() string {
+	return d.TemplateName
+}

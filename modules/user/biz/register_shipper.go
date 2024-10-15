@@ -11,34 +11,25 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-type UserRegisterStore interface {
+type RegisterShipperRegisterStore interface {
 	CreateUser(ctx context.Context, data *usermodel.UserCreate) error
 	Find(ctx context.Context, condition map[string]interface{}, moreInfo ...string) (*usermodel.User, error)
 }
 
-type Hash interface {
-	Hash(data string) string
+type shipperRegisterBiz struct {
+	store RegisterShipperRegisterStore
+	Hash  Hash
+	ps    pubsub.PubSub
+	rdb   redis.Client
 }
 
-type userRegisterBiz struct {
-	UserRegisterStore UserRegisterStore
-	Hash              Hash
-	ps                pubsub.PubSub
-	rdb               redis.Client
+func NewShipperRegisterBiz(store RegisterShipperRegisterStore, hash Hash, ps pubsub.PubSub, rdb redis.Client) *shipperRegisterBiz {
+	return &shipperRegisterBiz{store: store, Hash: hash, ps: ps, rdb: rdb}
 }
 
-func NewUserRegisterBiz(store UserRegisterStore, hash Hash, ps pubsub.PubSub, rdb redis.Client) *userRegisterBiz {
-	return &userRegisterBiz{UserRegisterStore: store, Hash: hash, ps: ps, rdb: rdb}
-}
-
-type emailData struct {
-	Email string
-	Otp   string
-}
-
-func (b *userRegisterBiz) RegisterUser(ctx context.Context, data *usermodel.UserCreate) error {
+func (b *shipperRegisterBiz) RegisterShipper(ctx context.Context, data *usermodel.UserCreate) error {
 	//check user exists
-	foundUser, err := b.UserRegisterStore.Find(ctx, map[string]interface{}{"email": data.Email})
+	foundUser, err := b.store.Find(ctx, map[string]interface{}{"email": data.Email})
 	if err != nil {
 		if error, ok := err.(*common.AppError); ok {
 			if error.Key != "ErrRecordNotFound" {
@@ -58,9 +49,9 @@ func (b *userRegisterBiz) RegisterUser(ctx context.Context, data *usermodel.User
 	data.Salt = salt
 	hashPassword := b.Hash.Hash(data.Password + salt)
 	data.Password = hashPassword
-	data.Role = "user"
-	data.Status = 1
-	if err := b.UserRegisterStore.CreateUser(ctx, data); err != nil {
+	data.Role = "shipper"
+	data.Status = 2
+	if err := b.store.CreateUser(ctx, data); err != nil {
 		return common.ErrCannotCreateEntity("users", err)
 	}
 	payload := emailData{Email: data.Email, Otp: common.GetOtp()}
