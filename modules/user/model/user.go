@@ -51,6 +51,11 @@ type UserCreate struct {
 	Avatar    *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
+type UserSetVerifyForgotPassword struct {
+	Email string `json:"email" form:"email" binding:"required,email"` // Bắt buộc phải có và đúng định dạng email
+	Token string `json:"token" form:"token" binding:"required"`       // Bắt buộc phải có
+}
+
 type UserForgotPassword struct {
 	Email string `json:"email" gorm:"column:email" binding:"required"`
 }
@@ -96,4 +101,5 @@ var (
 	ErrUserNotFound                    = common.NewCustomError(errors.New("user not found"), "user not found", "ErrLoginFail")
 	ErrOtp                             = common.NewCustomError(errors.New("otp invalid"), "otp invalid", "ErrOtpInvalid")
 	ErrNewPassWordIsNotBangOldPassword = common.NewCustomError(errors.New("new password is not old password"), "New password invalid", "ErrPasswordInvalid")
+	ErrUserDontCanChangePassword       = common.NewCustomError(errors.New("error occur, please try again few minutes"), "error occur, please try again few minutes", "ErrDontCanChangePassword")
 )

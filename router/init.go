@@ -7,7 +7,7 @@ import (
 )
 
 func InitRouter(mode string, appCtx appcontext.AppContect) *gin.Engine {
-	gin.SetMode("debug")
+	gin.SetMode(mode)
 	r := gin.Default()
 	r.Use(middlewares.Recovery(appCtx))
 	InitUserRouter(r, appCtx)

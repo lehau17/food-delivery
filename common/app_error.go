@@ -56,6 +56,10 @@ func ErrDb(err error) *AppError {
 	return NewErrorResponse(err, "something went wrong with db", err.Error(), "DB_SERVER_ERROR")
 }
 
+func ErrCache(err error) *AppError {
+	return NewErrorResponse(err, "something went wrong with redis", err.Error(), "DB_SERVER_ERROR")
+}
+
 func ErrInvalidRequest(err error) *AppError {
 	return NewErrorResponse(err, "invalid request", err.Error(), "ERR_INVALID_REQUEST")
 }
