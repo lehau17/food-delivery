@@ -3,6 +3,7 @@ package main
 import (
 	_ "image/jpeg"
 	_ "image/png"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -10,6 +11,7 @@ import (
 	"github.com/lehau17/food_delivery/components/pubsub/localps"
 	"github.com/lehau17/food_delivery/config"
 	"github.com/lehau17/food_delivery/router"
+	"github.com/lehau17/food_delivery/skio"
 	"github.com/lehau17/food_delivery/subcriber"
 )
 
@@ -30,6 +32,8 @@ func main() {
 	consumberJob.Start()
 
 	r := router.InitRouter("debug", ctx)
+	r.StaticFS("/public", http.Dir("./asset"))
+	skio.NewRtEngine().Run(ctx, r)
 	r.Run() // listen and serve on 0.0.0.0:8080
 
 }

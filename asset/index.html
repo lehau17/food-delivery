@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Client</title>
+    <!-- Sử dụng phiên bản Socket.IO 2.x -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>  
+</head>
+<body>
+    <h1>Socket.IO Client</h1>
+    <div id="status">Connecting...</div>
+
+    <script>
+        // Kết nối tới server Socket.IO
+        const socket = io("http://localhost:8080", {
+            transports: ["websocket"], // Sử dụng WebSocket
+        });
+
+        // Sự kiện kết nối thành công
+        socket.on("connect", () => {
+            console.log("Connected to the server");
+            document.getElementById("status").innerText = "Connected";
+
+            // Xác thực với token (thay bằng token của bạn)
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXlsb2FkIjp7InVpZCI6MSwicm9sZSI6InVzZXIifSwiaXNzIjoiU2VydmVyIEdPX0xhbmcgOiBMZSBUcnVuZyBIYXUiLCJleHAiOjE3MjkzNDk4MTcsImlhdCI6MTcyOTI0MTgxN30.b-RgGlX6_rmLVg07l6qb8ly3pYrm4iDGQIDp73xyu4c";
+            socket.emit("authentication", token);
+        });
+
+        // Lắng nghe sự kiện xác thực thành công
+        socket.on("authenticated", (user) => {
+            console.log("Authenticated", user);
+            document.getElementById("status").innerText = "Authenticated: " + JSON.stringify(user);
+        });
+
+        // Lắng nghe sự kiện xác thực thất bại
+        socket.on("authentication_failed", (error) => {
+            console.error("Authentication failed", error);
+            document.getElementById("status").innerText = "Authentication Failed: " + error;
+        });
+
+        // Lắng nghe lỗi kết nối
+        socket.on("connect_error", (error) => {
+            console.error("Connection Error:", error);
+            document.getElementById("status").innerText = "Connection Error: " + error.message;
+        });
+
+        // Xử lý sự kiện ngắt kết nối
+        socket.on("disconnect", (reason) => {
+            console.log("Disconnected", reason);
+            document.getElementById("status").innerText = "Disconnected: " + reason;
+        });
+    </script>
+</body>
+</html>

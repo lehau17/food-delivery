@@ -2,7 +2,6 @@ package userbiz
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/lehau17/food_delivery/components/jwtprovider"
 	usermodel "github.com/lehau17/food_delivery/modules/user/model"
@@ -43,7 +42,7 @@ func (b *userLoginBiz) Login(ctx context.Context, data *usermodel.UserLogin) (*j
 	}
 
 	// generate JWT token
-	token, err := b.jwtprovider.SignToken(&jwtprovider.TokenPayload{Uid: fmt.Sprint(foundUser.Id), Role: foundUser.Role}, b.expiry)
+	token, err := b.jwtprovider.SignToken(&jwtprovider.TokenPayload{Uid: foundUser.Id, Role: foundUser.Role}, b.expiry)
 	if err != nil {
 		return nil, jwtprovider.ErrCreateToken
 	}

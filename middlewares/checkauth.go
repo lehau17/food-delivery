@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"errors"
-	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +38,7 @@ func CheckAuth(act appcontext.AppContect) func(c *gin.Context) {
 		if err != nil {
 			panic(err)
 		}
-		id, _ := strconv.Atoi(payload.Uid)
+		id := payload.Uid
 		user, err := store.Find(c.Request.Context(), map[string]interface{}{"id": id})
 		if err != nil {
 			panic(err)
